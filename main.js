@@ -14,6 +14,12 @@ let score = 0
 // init time
 let time = 10
 
+// set difficulty to  value in local storage or default to medium
+let difficulty = localStorage.getItem('difficulty') !== null ? localStorage.getItem('difficulty') : 'medium'
+
+// set difficulty select value
+difficultySelect.value = localStorage.getItem('difficulty') !== null ? localStorage.getItem('difficulty') : 'medium'
+
 // List of words for game
 const words = [
     'sigh',
@@ -84,7 +90,7 @@ function gameOver(){
 
 addWordToDOM()
 
-// event listener
+// Typing event listener
 text.addEventListener('input', e =>{
     const insertedText = e.target.value
     
@@ -95,8 +101,25 @@ text.addEventListener('input', e =>{
         //clear input area
         e.target.value = ''
 
-        time += 5
-        
+        if(difficulty === 'hard'){
+            time += 1
+        }else if (difficulty === 'medium'){
+            time += 2
+        }else {
+            time += 3
+        }
+
         updateTime()
     }
+})
+
+// settings button action
+settingsBtn.addEventListener('click', () =>{
+    settings.classList.toggle('hide')
+})
+
+// select setting
+settingsForm.addEventListener('change', e =>{
+    difficulty = e.target.value
+    localStorage.setItem('difficulty', difficulty)
 })
